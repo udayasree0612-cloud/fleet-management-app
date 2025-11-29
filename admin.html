@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Admin Dasboard>
+        </title>
+        <style>
+            .card{ display: inline-block;
+                border: 1px solid #000; padding: 8px;
+                margin: 8px;width: 180px;}
+                .card img{width: 100%;height: 100px;object-fit: cover;}
+                
+            
+        </style>
+
+    </head>
+    <body>
+        <div>
+            <select id ="categoryFilter">
+                <option value="">ALL</option>
+                <option>Auto</option>
+                <option>Car</option>
+                <option>Truck</option>
+                <option>Bus</option>
+            </select>
+            <select id="availFilter">
+                <option value="">ALL</option>
+                <option>Available</option>
+                 <option>Unavailable</option>
+            </select>
+            <button
+            onclick="clearFilter()">Clear Filter</button>
+
+        </div>
+        <div style ="display: flex">
+            <div style="min-width: 180px;">
+                <h3>Add Fleet
+                </h3>
+                <input id="regNo"
+                placeholder="reg No of vehicles "></br>
+                <select  id="category">
+                    <option>Auto</option>
+                    <option>Car</option>
+                    <option>Truck</option>
+                    <option>Bus</option>
+                </select><br>
+                <input id="driver Name"
+                placeholder="Driver Name"><br>
+                <select id ="isAvailable"><option>Available</option></select>
+                <button onclick="addFleet()">Add Fleet</button>
+            </div>
+            <div id="fleetcards"
+            style="flex:1;"display:flex;
+            flex-wrap:wrap;"</div>
+
+        </div>
+        <script>
+            let fleets =[];
+            const VEHICLE_IMG = 'https://coding-platform.s3.amazonaws.com/dev/lms/tickets/5e80fcb6-3f8e-480c-945b-30a5359eb40e/JNmYjkVr3WOjsrbu.png'
+        function addFleet() {
+            const reg = document.getElementById('regNo').value.trim();
+            const cat = document.getElementById('category').value;
+            const driver = document.getElementById('driverName').value.trim();
+            const avail= document.getElementById('isAvailable').value;
+            if (!reg || !cat || !driver ||!avail){
+                alert('All feilds required.')
+                return;
+            }
+            fleets.push({reg,cat,driver,avail});
+            document.getElementById('regNo').value='';
+            document.getElementById('driverName').value='';
+            renderCards();
+
+
+        }
+        function renderCards() {
+          let cf= document.getElementById('categoryFilter').value;
+          let af= document.getElementById('AvailFilter').value;
+          let cards = fleet.filter (f=>(!cf || f.cat===cf)&&(!af ||f.avail === af));
+          let html='';
+          cards.foreach((f,i) => {
+            html += `\<div class ="card">
+                <img src ="${VEHICLE_IMG}"
+                alt= "vehicle">
+                Reg No: ${f.reg}<br>
+                category: ${f.cat}<br>
+                Driver: ${f.driver}<br>
+                <button
+                          onclick="updateDriver(${i})" >UpdateDriver"</button>
+                          <button
+                          onclick="toggleAvail(${i})">ChangeAvailability</button>
+                          <button onclick="deleteFleet(${i})">deleteVehicle</button>
+                          </div>`;
+
+
+          });
+          document.getElementById('fleetcards').innerHTML=html;
+
+          
+        }
+        function updateDriver(idx){
+
+            let name= prompt("Enter new driver name :");
+            if(name && namr.trim());
+            else alert ("Driver name cannot be empty.");
+            renderCards();
+        }
+        function toggleAvail(idx)
+        {
+            fleets[idx].avail= fleets [idx].avail==='available' ? 'Unavailble' : 'Available';
+            renderCards();
+        }
+        function deleteFleet(idx)
+        {
+            if (confirm("Delete this vehicle?")){
+                fleets.splice(idx,1);
+                renderCards();
+            }
+        }
+        function clearFilter()
+        {
+            document.getElementById('categoryFilter').value ='';
+            document.getElementById('AvailFilter').value ='';
+            renderCards();
+
+
+        }
+         document.getElementById('categoryFilter').onchange = renderCards;
+         document.getElementById('AvailFilter').onchange = renderCards;
+         
+         
+
+
+
+        
+        </script>
+    </body>
+</html>
